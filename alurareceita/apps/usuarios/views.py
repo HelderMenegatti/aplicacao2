@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth, messages
 from receitas.models import Receita
@@ -67,40 +67,6 @@ def dashboard(request):
 def logout(request):
     auth.logout(request)
     return redirect('index')
-
-
-def cria_receita(request):
-    if request.method == 'POST':
-        nome_receita = request.POST['nome_receita']
-        ingredientes = request.POST['ingredientes']
-        modo_preparo = request.POST['modo_preparo']
-        tempo_preparo = request.POST['tempo_preparo']
-        rendimento = request.POST['rendimento']
-        categoria = request.POST['categoria']
-        foto_receita = request.FILES['foto_receita']
-        user = get_object_or_404(User, pk=request.user.id)
-
-        receita = Receita.objects.create(pessoa=user, nome_receita=nome_receita,
-        ingredientes=ingredientes, modo_preparo=modo_preparo, tempo_preparo=tempo_preparo,
-        rendimento=rendimento, categoria=categoria, foto_receita=foto_receita,
-        )
-        receita.save()
-        return redirect('dashboard')
-    else:
-        return render(request, 'usuarios/cria_receita.html') 
-
-
-def deleta_receita(request, receita_id):
-    receita = get_object_or_404(Receita, pk=receita_id)
-    receita.delete()
-    return redirect('dashboard')
-
-def editar_receita(request, receita_id):
-    receita = get_object__or_404(Receita, pk=receita_id)
-    dado = {
-        "receita": receita
-    }
-    return render(request, 'usuarios/editar_receita.html, ')
 
 
 def campo_vazio(campo):
